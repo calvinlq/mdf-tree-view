@@ -1,0 +1,39 @@
+{
+  "name": "@clq/mdf-tree-view",
+  "version": "1.0.0",
+  "description": "Mapping data flow tree view visualization tool",
+  "type": "module",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "tree",
+    "connection",
+    "visualization",
+    "canvas"
+  ],
+  "author": "calvinlq",
+  "email": "calvinlq@163.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calvinlq/mdf-tree-view.git"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@vitejs/plugin-react": "^5.0.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "sass": "^1.90.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3",
+    "vite-plugin-dts": "^4.5.4"
+  }
+}

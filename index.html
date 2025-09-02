@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Tree Flow Demo</title>
+    <style>
+        .app-container {
+            text-align: center;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #multi-tree-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="./dist/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <h3>Mapping data flow tree view</h3>
+        <div id="multi-tree-container" data-treeWidth="200" data-treeHeight="300"></div>
+    </div>
+
+    <script type="module">
+        import MappingTreeFlow from './index.ts';
+        import { multiTreeData, multiLnkList } from './mockData.js';
+
+        console.log('multiTreeData', multiTreeData);
+        console.log('multiLnkList', multiLnkList);
+        const trees = [];
+        const treePrefixes = Object.keys(multiTreeData);
+        
+        // 遍历multiTreeData，为每棵树创建配置
+        treePrefixes.forEach((prefix, index) => {
+            trees.push({
+                id: prefix,  // 使用数据中的前缀作为树ID
+                data: multiTreeData[prefix],  // 使用对应的数据
+            });
+        });
+
+        // 使用从mockData.js导入的multiLnkList作为初始连接
+        const initialLinks = multiLnkList;
+
+        // 创建onConnectionChange回调函数
+        const handleConnectionChange = (connection, type) => {
+            console.log(`单个连线${type === 'add' ? '添加' : '删除'}: ${JSON.stringify(connection)}`);
+        };
+
+        // 创建onUpdateConnection回调函数
+        const handleUpdateConnection = (connection) => {
+            console.log(`连线已更新: ${JSON.stringify(connection)}`);
+        };
+
+        // 创建onConnectionsChange回调函数
+        const handleConnectionsChange = (connections) => {
+            console.log(`所有连线已更新, 当前共有${connections.length}条连线`);
+        };
+
+        const options = {
+            // bezier: 50,  // 贝塞尔曲线参数，控制连接线的弯曲程度
+            // enableLink: true,  //开启连线, 默认true
+            enableTxtBgColor: true, //开启文本背景颜色, 默认false
+            // enableDraggable: false, // 开启树容器拖拽功能
+            onConnectionChange: handleConnectionChange, // 单个连线变化回调
+            onUpdateConnection: handleUpdateConnection, // 连线更新回调
+            onConnectionsChange: handleConnectionsChange, // 所有连线变化回调
+        };
+        
+        // 保存实例引用，以便外部调用方法
+        const mtfInstance = new MappingTreeFlow('multi-tree-container', trees, initialLinks, options);
+        
+        // 更新连线
+        const updateAllConnections = (linkData) => {
+           mtfInstance.updateConnection(linkData);
+        };
+    </script>
+</body>
+</html>
