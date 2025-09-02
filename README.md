@@ -25,13 +25,13 @@ MDF-Tree-View (Mapping Data Flow Tree View) 是一个强大的可视化工具，
 ### NPM
 
 ```bash
-npm install @clq/mdf-tree-view --save
+npm install @calvinlq/mdf-tree-view --save
 ```
 
 ### Yarn
 
 ```bash
-yarn add @clq/mdf-tree-view
+yarn add @calvinlq/mdf-tree-view
 ```
 
 ## 快速开始
@@ -39,8 +39,8 @@ yarn add @clq/mdf-tree-view
 ### 引入资源
 
 ```javascript
-import MappingTreeFlow from '@clq/mdf-tree-view';
-import '@clq/mdf-tree-view/dist/index.css';
+import MappingTreeFlow from '@calvinlq/mdf-tree-view';
+import '@calvinlq/mdf-tree-view/dist/index.css';
 ```
 
 ### HTML结构

@@ -1,5 +1,5 @@
 {
-  "name": "@clq/mdf-tree-view",
+  "name": "@calvinlq/mdf-tree-view",
   "version": "1.0.0",
   "description": "Mapping data flow tree view visualization tool",
   "type": "module",
@@ -26,6 +26,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/calvinlq/mdf-tree-view.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
