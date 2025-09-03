@@ -106,6 +106,9 @@ class MappingTreeFlow {
       this.container.style.minHeight = '500px';
     }
     
+    // 设置容器的滚动条样式
+    this.container.style.overflow = 'auto';
+    
     // 创建外层容器和SVG连接层
     this.container.innerHTML = `<svg id="connection-layer" width="100%" height="100%"></svg>`;
     
@@ -696,24 +699,10 @@ class MappingTreeFlow {
     const treeContainers = this.treeContainers;
     if (treeContainers.length === 0) return;
     
+    let minLeft = 0;
+    let minTop = 0;
     let maxRight = 0;
     let maxBottom = 0;
-    
-    // 计算所有容器的最大右边界和下边界
-    treeContainers.forEach(container => {
-      const rect = container.getBoundingClientRect();
-      const parentRect = this.container!.getBoundingClientRect();
-      
-      // 计算容器相对于父容器的位置
-      const left = parseInt(container.style.left || '0');
-      const top = parseInt(container.style.top || '0');
-      const width = rect.width;
-      const height = rect.height;
-      
-      // 更新最大右边界和下边界
-      maxRight = Math.max(maxRight, left + width);
-      maxBottom = Math.max(maxBottom, top + height);
-    });
     
     // 获取父容器当前计算出的尺寸
     const parentStyle = window.getComputedStyle(this.container);
@@ -721,18 +710,56 @@ class MappingTreeFlow {
     const parentHeight = parseInt(parentStyle.height);
     const minHeight = parseInt(parentStyle.minHeight || '0');
     
-    // 只有当最大边界超过父容器当前尺寸时才调整
-    if (maxRight > parentWidth) {
-      this.container.style.width = `${maxRight + 50}px`; // 增加50px的边距
+    // 计算所有容器的最小左边界、最小上边界、最大右边界和最大下边界
+    treeContainers.forEach(container => {
+      const left = parseInt(container.style.left || '0');
+      const top = parseInt(container.style.top || '0');
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      
+      // 更新最小左边界和最小上边界
+      minLeft = Math.min(minLeft, left);
+      minTop = Math.min(minTop, top);
+      
+      // 更新最大右边界和最大下边界
+      maxRight = Math.max(maxRight, left + width);
+      maxBottom = Math.max(maxBottom, top + height);
+    });
+    
+    // 计算内容区域的整体尺寸
+    const contentWidth = maxRight - minLeft;
+    const contentHeight = maxBottom - minTop;
+    
+    // 如果有任何容器向左或向上超出，创建一个代理容器来实现滚动
+    if (minLeft < 0 || minTop < 0) {
+      // 确保所有容器都有相对于新坐标系的位置
+      treeContainers.forEach(container => {
+        const left = parseInt(container.style.left || '0');
+        const top = parseInt(container.style.top || '0');
+        
+        // 调整容器位置，使最左边和最上边的容器靠近视图边缘
+        container.style.left = `${left - minLeft + 20}px`; // 添加20px的边距
+        container.style.top = `${top - minTop + 20}px`; // 添加20px的边距
+      });
+      
+      // 调整容器大小以适应所有树容器
+      this.container.style.width = `${Math.max(contentWidth + 40, parentWidth)}px`; // 增加40px的边距
+      this.container.style.minHeight = `${Math.max(contentHeight + 40, minHeight)}px`; // 增加40px的边距
+    } else {
+      // 只有当最大边界超过父容器当前尺寸时才调整
+      if (maxRight > parentWidth) {
+        this.container.style.width = `${maxRight + 50}px`; // 增加50px的边距
+      }
+      
+      // 确保高度至少为最小高度
+      const targetHeight = Math.max(maxBottom + 50, minHeight);
+      if (targetHeight > parentHeight) {
+        this.container.style.minHeight = `${targetHeight}px`;
+      }
     }
     
-    // 确保高度至少为最小高度
-    const targetHeight = Math.max(maxBottom + 50, minHeight);
-    if (targetHeight > parentHeight) {
-      this.container.style.minHeight = `${targetHeight}px`;
-    }
-    
-    console.log('调整容器大小:', { maxRight, maxBottom, newWidth: this.container.style.width, newMinHeight: this.container.style.minHeight });
+    console.log('调整容器大小:', { minLeft, minTop, maxRight, maxBottom, newWidth: this.container.style.width, newMinHeight: this.container.style.minHeight });
   }
 
   private drawConnections(): void {
