@@ -137,13 +137,13 @@ class MappingTreeFlow {
       if (tree.width) {
         treeContainer.style.width = `${tree.width}px`;
       } else if (this.container.dataset.treewidth) {
-        treeContainer.style.width = `${this.container.dataset.treewidth}px`;
+        treeContainer.style.width = `${this.container.dataset.treewidth}`;
       }
       
       if (tree.height) {
         treeContainer.style.height = `${tree.height}px`;
       } else if (this.container.dataset.treeheight) {
-        treeContainer.style.height = `${this.container.dataset.treeheight}px`;
+        treeContainer.style.height = `${this.container.dataset.treeheight}`;
       }
       
       // 基础样式设置

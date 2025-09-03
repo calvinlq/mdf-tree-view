@@ -23,7 +23,7 @@ class j {
     const e = document.getElementById("connection-layer");
     e && (e.style.position = "absolute", e.style.top = "0", e.style.left = "0", e.style.width = "100%", e.style.height = "100%", e.style.pointerEvents = "none", e.style.zIndex = "10"), window.addEventListener("resize", this.handleResize.bind(this)), new ResizeObserver(this.handleResize.bind(this)).observe(this.container), this.trees.forEach((t, i) => {
       const s = document.createElement("div");
-      if (s.className = "tree-container", s.id = t.id, t.width ? s.style.width = `${t.width}px` : this.container.dataset.treewidth && (s.style.width = `${this.container.dataset.treewidth}px`), t.height ? s.style.height = `${t.height}px` : this.container.dataset.treeheight && (s.style.height = `${this.container.dataset.treeheight}px`), s.style.position = this.enableDraggable ? "absolute" : "relative", s.style.userSelect = "none", this.enableDraggable) {
+      if (s.className = "tree-container", s.id = t.id, t.width ? s.style.width = `${t.width}px` : this.container.dataset.treewidth && (s.style.width = `${this.container.dataset.treewidth}`), t.height ? s.style.height = `${t.height}px` : this.container.dataset.treeheight && (s.style.height = `${this.container.dataset.treeheight}`), s.style.position = this.enableDraggable ? "absolute" : "relative", s.style.userSelect = "none", this.enableDraggable) {
         const l = (t.width || parseInt(this.container.dataset.treewidth || "0")) * i + i * this.minTreeDistance;
         s.style.left = `${l}px`, s.style.top = "20px";
       } else
